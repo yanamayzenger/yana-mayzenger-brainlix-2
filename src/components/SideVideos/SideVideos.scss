@@ -1,0 +1,23 @@
+@use "../../styles/partials/global" as *;
+@use "../../styles/partials/variables" as *;
+@use "../../styles/partials/fonts" as *;
+@use "../../styles/partials/mixins" as *;
+
+.list {
+  padding: $max-space 0 $min-space;
+
+  @include desktop {
+    border-left: $divider;
+    padding-left: $small-space;
+    height: 100%;
+  }
+
+  &__title {
+    color: $silver;
+    margin: 0 0 $max-space $min-space;
+
+    @include tablet {
+      font-size: $normal-body-font;
+    }
+  }
+}
