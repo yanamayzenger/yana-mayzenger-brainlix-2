@@ -1,3 +1,4 @@
+import React from "react";
 import "./VideoHero.scss";
 
 const VideoHero = ({ videoData }) => {

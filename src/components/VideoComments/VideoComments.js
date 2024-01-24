@@ -1,9 +1,19 @@
+import React, { useState } from "react";
 import profileImage from "../../assets/Images/Mohan-muruge.jpg";
 import "./VideoComments.scss";
 import submitIcon from "../../assets/Icons/add_comment.svg";
+
 const VideoComments = ({ handleSubmit }) => {
+  const [commentText, setCommentText] = useState("");
+
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    handleSubmit(commentText);
+    setCommentText("");
+  };
+
   return (
-    <form className="form" onSubmit={handleSubmit}>
+    <form className="form" onSubmit={handleCommentSubmit}>
       <div className="form__avatar-wrapper">
         <img className="form__avatar" src={profileImage} alt="Mogan muruge" />
       </div>
@@ -16,6 +26,8 @@ const VideoComments = ({ handleSubmit }) => {
           className="form__input"
           name="comment"
           placeholder="Write comment here"
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
         />
         <button className="form__submit" type="submit">
           <img
@@ -29,4 +41,5 @@ const VideoComments = ({ handleSubmit }) => {
     </form>
   );
 };
+
 export default VideoComments;
