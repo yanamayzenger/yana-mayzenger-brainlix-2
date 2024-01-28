@@ -13,8 +13,9 @@ function App() {
       </header>
       <main className="main">
         <Routes>
-          {" "}
-          <Route path="/upload" element={<UploadPage />} />{" "}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/video/:videoId" element={<HomePage />} />
+          <Route path="/upload" element={<UploadPage />} />
         </Routes>
       </main>
     </Router>
