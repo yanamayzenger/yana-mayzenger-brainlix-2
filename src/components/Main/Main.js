@@ -1,44 +1,58 @@
-import { Component } from "react";
+import React, { useState, useEffect } from "react";
 import VideoHero from "../VideoHero/VideoHero";
-import Dataset from "../../Data/video-details.json";
-import "./Main.scss";
 import VideoDetails from "../VideoDetails/VideoDetails";
 import Comments from "../Comments/Comments";
 import SideVideos from "../SideVideos/SideVideos";
+import videoDetailsData from "../../Data/video-details.json";
+import videosData from "../../Data/videos.json";
+import "./Main.scss";
 
-class Main extends Component {
-  state = {
-    videoData: Dataset,
-    selected: Dataset[0],
+const Main = () => {
+  const [videoData, setVideoData] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [sideVideos, setSideVideos] = useState([]);
+
+  useEffect(() => {
+    const combinedData = videosData.map((video) => ({
+      ...videoDetailsData.find((detail) => detail.id === video.id),
+      ...video,
+    }));
+
+    setVideoData(combinedData);
+    setSelectedVideo(combinedData[0]);
+    setSideVideos(combinedData.slice(1));
+  }, []);
+
+  const handleClick = (id) => {
+    const selected = videoData.find((video) => video.id === id);
+    setSelectedVideo(selected);
+    setSideVideos(videoData.filter((video) => video.id !== id));
   };
 
-  handleClick = (id) => {
-    const selected = this.state.videoData.find((video) => video.id === id);
-    this.setState({ selected: selected });
-  };
-
-  render() {
-    return (
-      <main className="main">
-        <section className="main__hero">
-          <VideoHero videoData={this.state.selected} />
-        </section>
-        <section className="main__body">
-          <div className="main__body-left">
-            <VideoDetails selected={this.state.selected} />
-            <Comments selected={this.state.selected} />
-          </div>
-          <div className="main__body-right">
-            <SideVideos
-              videoData={this.state.videoData}
-              selected={this.state.selected}
-              handleClick={this.handleClick}
-            />
-          </div>
-        </section>
-      </main>
-    );
-  }
-}
+  return (
+    <main className="main">
+      {selectedVideo && (
+        <>
+          <section className="main__hero">
+            <VideoHero videoData={selectedVideo} />
+          </section>
+          <section className="main__body">
+            <div className="main__body-left">
+              <VideoDetails selected={selectedVideo} />
+              <Comments selected={selectedVideo} />
+            </div>
+            <div className="main__body-right">
+              <SideVideos
+                videoData={sideVideos}
+                selected={selectedVideo}
+                handleClick={handleClick}
+              />
+            </div>
+          </section>
+        </>
+      )}
+    </main>
+  );
+};
 
 export default Main;
