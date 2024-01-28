@@ -2,6 +2,8 @@ import searchIcon from "../../assets/Icons/search.svg";
 import uploadIcon from "../../assets/Icons/upload.svg";
 import profileImage from "../../assets/Images/Mohan-muruge.jpg";
 import "./SearchBar.scss";
+import React from "react";
+import { Link } from "react-router-dom";
 
 const SearchBar = () => {
   const handleSubmit = (event) => {
@@ -21,14 +23,16 @@ const SearchBar = () => {
         />
       </div>
 
-      <button className="search__submit" type="submit">
-        <img
-          className="search__submit-icon"
-          src={uploadIcon}
-          alt="upload icon"
-        />
-        UPLOAD
-      </button>
+      <Link to="/upload">
+        <button className="search__submit" type="submit">
+          <img
+            className="search__submit-icon"
+            src={uploadIcon}
+            alt="upload icon"
+          />
+          UPLOAD
+        </button>
+      </Link>
 
       <div className="search__avatar-wrapper">
         <img className="search__avatar" src={profileImage} alt="Mogan muruge" />
