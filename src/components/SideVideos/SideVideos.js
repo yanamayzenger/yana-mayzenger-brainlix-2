@@ -1,5 +1,5 @@
-import React from "react";
 import SideVideosList from "../SideVideosList/SideVideosList";
+
 import "./SideVideos.scss";
 
 const SideVideos = ({ videoData, selected, handleClick }) => {
@@ -12,7 +12,7 @@ const SideVideos = ({ videoData, selected, handleClick }) => {
             <SideVideosList
               key={video.id}
               videoData={video}
-              handleClick={() => handleClick(video)}
+              handleClick={() => handleClick(video.id)}
             />
           );
         } else {
