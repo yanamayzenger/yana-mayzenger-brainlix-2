@@ -13,14 +13,19 @@
       format("truetype");
   font-weight: 600;
 }
+
 @font-face {
   font-family: "avenir";
   src: url(../../assets/Fonts/AvenirNextLTPro-Regular.otf) format("truetype"),
     url(../../assets/Fonts/Alternative/AvenirNextLTPro.ttf);
   font-weight: 400;
 }
+@font-face {
+  font-family: "fallback-avenir";
+  src: local("Arial"), local("Helvetica"), sans-serif;
+}
 
-$primary-font: "avenir";
+$primary-font: "avenir", "fallback-avenir";
 $weight-regular: 400;
 $weight-demi: 600;
 $weight-bold: 700;
