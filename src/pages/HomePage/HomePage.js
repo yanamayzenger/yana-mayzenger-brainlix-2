@@ -5,7 +5,6 @@ import VideoHero from "../../components/VideoHero/VideoHero";
 import VideoDetails from "../../components/VideoDetails/VideoDetails";
 import Comments from "../../components/Comments/Comments";
 import SideVideos from "../../components/SideVideos/SideVideos";
-import { api_url, api_key } from "../../components/API/API";
 import "./HomePage.scss";
 
 const HomePage = () => {
@@ -16,7 +15,7 @@ const HomePage = () => {
 
   useEffect(() => {
     axios
-      .get(`${api_url}/videos${api_key}`)
+      .get("http://localhost:8080/videos")
       .then((response) => setVideos(response.data))
       .catch((error) => console.error("Error fetching videos list: ", error));
   }, []);
@@ -25,7 +24,7 @@ const HomePage = () => {
     if (videos.length > 0) {
       const currentVideoId = videoId || videos[0].id;
       axios
-        .get(`${api_url}/videos/${currentVideoId}${api_key}`)
+        .get(`http://localhost:8080/videos/${currentVideoId}`)
         .then((response) => setSelectedVideo(response.data))
         .catch((error) =>
           console.error("Error fetching selected video details: ", error)
