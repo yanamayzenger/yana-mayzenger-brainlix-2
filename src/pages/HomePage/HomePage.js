@@ -5,46 +5,32 @@ import VideoHero from "../../components/VideoHero/VideoHero";
 import VideoDetails from "../../components/VideoDetails/VideoDetails";
 import Comments from "../../components/Comments/Comments";
 import SideVideos from "../../components/SideVideos/SideVideos";
-import { api_url, api_key } from "../../components/API/API";
 import "./HomePage.scss";
 
 const HomePage = () => {
+  const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [sideVideos, setSideVideos] = useState([]);
   const { videoId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchVideoDetails = async () => {
-      try {
-        let selectedVideoResponse;
+    axios
+      .get("http://localhost:8080/videos")
+      .then((response) => setVideos(response.data))
+      .catch((error) => console.error("Error fetching videos list: ", error));
+  }, []);
 
-        if (videoId) {
-          selectedVideoResponse = await axios.get(
-            `${api_url}/videos/${videoId}${api_key}`
-          );
-        } else {
-          const videosResponse = await axios.get(`${api_url}/videos${api_key}`);
-          const firstVideoId = videosResponse.data[0].id;
-          selectedVideoResponse = await axios.get(
-            `${api_url}/videos/${firstVideoId}${api_key}`
-          );
-        }
-
-        setSelectedVideo(selectedVideoResponse.data);
-        const videosResponse = await axios.get(`${api_url}/videos${api_key}`);
-        setSideVideos(
-          videosResponse.data.filter(
-            (video) => video.id !== selectedVideoResponse.data.id
-          )
+  useEffect(() => {
+    if (videos.length > 0) {
+      const currentVideoId = videoId || videos[0].id;
+      axios
+        .get(`http://localhost:8080/videos/${currentVideoId}`)
+        .then((response) => setSelectedVideo(response.data))
+        .catch((error) =>
+          console.error("Error fetching selected video details: ", error)
         );
-      } catch (error) {
-        console.error("Error fetching video details: ", error);
-      }
-    };
-
-    fetchVideoDetails();
-  }, [videoId]);
+    }
+  }, [videoId, videos]);
 
   const handleVideoSelect = (id) => {
     navigate(`/video/${id}`);
@@ -64,7 +50,9 @@ const HomePage = () => {
             </div>
             <div className="main__body-right">
               <SideVideos
-                videoData={sideVideos}
+                videoData={videos.filter(
+                  (video) => video.id !== selectedVideo.id
+                )}
                 selected={selectedVideo}
                 onVideoSelect={handleVideoSelect}
               />
